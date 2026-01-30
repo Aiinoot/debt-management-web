@@ -9,7 +9,9 @@ export function getTheme(mode) {
     palette: {
       mode,
       primary: {
-        main: "#7A5498",
+        main: mode === "dark" ? "#c88a00" : "#7A5498",
+        contrastText: mode === "dark" ? "#ffffff" : undefined,
+        contrastText: "#ffffff",
       },
       secondary: {
         main: "#4D2F70",

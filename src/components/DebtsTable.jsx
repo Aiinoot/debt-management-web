@@ -57,7 +57,14 @@ export default function DebtsTable({ client }) {
   }, [client?.id])
 
   function getStatusChip(status) {
-    if (status === "ABERTO") return <Chip label="Aberto" color="warning" size="small" />
+    if (status === "ABERTO")
+      return (
+        <Chip
+          label="Aberto"
+          size="small"
+          sx={{ bgcolor: "#e1ba83", color: "#1a1a1a" }}
+        />
+      )
     if (status === "QUITADO") return <Chip label="Quitado" color="success" size="small" />
     if (status === "DEVOLVIDO") return <Chip label="Devolvido" color="error" size="small" />
     return <Chip label={status || ""} size="small" />
