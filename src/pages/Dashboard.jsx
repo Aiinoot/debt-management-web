@@ -1,42 +1,43 @@
 import { useState } from "react"
-import { Grid, Paper, Typography } from "@mui/material"
+import { Box, Paper, Typography } from "@mui/material"
 
 import ClientsTable from "../components/ClientsTable"
 import DebtsTable from "../components/DebtsTable"
 
+const paperSx = {
+  p: "25px",
+  borderRadius: "25px",
+  boxShadow: 6,
+}
+
 export default function Dashboard() {
-    const [selectedClient, setSelectedClient] = useState(null)
+  const [selectedClient, setSelectedClient] = useState(null)
 
-    return (
-        <Grid container spacing={2} padding={2}>
-            <Grid item xs={12} md={5}>
-                <Paper sx={{ padding: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Clientes
-                    </Typography>
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" },
+        gap: 3,
+        mt: 2,
+        px: 2,
+        maxWidth: 1400,
+        mx: "auto",
+      }}
+    >
+      <Paper sx={paperSx}>
+        <ClientsTable onSelectClient={setSelectedClient} />
+      </Paper>
 
-                    <ClientsTable onSelectClient={setSelectedClient} />
-                </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={7}>
-                <Paper sx={{ padding: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                        {selectedClient
-                            ? `Dívidas de ${selectedClient.full_name}`
-                            : "Dívidas do Cliente"}
-                    </Typography>
-
-
-                    {selectedClient ? (
-                        <DebtsTable client={selectedClient} />
-                    ) : (
-                        <Typography variant="body2" color="text.secondary">
-                            Selecione um cliente para visualizar as dívidas.
-                        </Typography>
-                    )}
-                </Paper>
-            </Grid>
-        </Grid>
-    )
+      <Paper sx={paperSx}>
+        {selectedClient ? (
+          <DebtsTable client={selectedClient} />
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            Selecione um cliente para visualizar as dívidas.
+          </Typography>
+        )}
+      </Paper>
+    </Box>
+  )
 }

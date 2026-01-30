@@ -103,13 +103,22 @@ export default function DebtsTable({ client }) {
 
   return (
     <Box>
-      <Stack direction="row" justifyContent="flex-end" mb={2}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h6">Dívidas de {client.full_name}</Typography>
         <Button variant="contained" onClick={() => setFormModalOpen(true)}>
-          + Nova Dívida
+          + Nova dívida
         </Button>
       </Stack>
 
-      <Table>
+      <Table
+        size="small"
+        sx={{
+          "& .MuiTableCell-root": {
+            py: 1.5,
+            lineHeight: 1.6,
+          },
+        }}
+      >
         <TableHead>
           <TableRow>
             <TableCell>Título</TableCell>
@@ -218,7 +227,7 @@ export default function DebtsTable({ client }) {
         sx={{ zIndex: 1400 }}
       >
         <Alert severity="success" onClose={() => setStatusToastOpen(false)}>
-          Marcado como quitado!
+          Dívida quitada!
         </Alert>
       </Snackbar>
     </Box>

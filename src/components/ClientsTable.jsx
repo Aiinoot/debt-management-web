@@ -51,12 +51,21 @@ export default function ClientsTable({ onSelectClient }) {
 
     return (
         <Box>
-            <Stack direction="row" justifyContent="flex-end" mb={2}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="h6">Clientes</Typography>
                 <Button variant="contained" onClick={() => setOpenModal(true)}>
-                    + Novo Cliente
+                    + Novo cliente
                 </Button>
             </Stack>
-            <Table>
+            <Table
+                size="small"
+                sx={{
+                  "& .MuiTableCell-root": {
+                    py: 1.5,
+                    lineHeight: 1.6,
+                  },
+                }}
+            >
                 <TableHead>
                     <TableRow>
                         <TableCell>Nome</TableCell>
