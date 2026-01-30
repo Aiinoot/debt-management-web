@@ -9,7 +9,6 @@ export default function Dashboard() {
 
     return (
         <Grid container spacing={2} padding={2}>
-            {/* CLIENTES */}
             <Grid item xs={12} md={5}>
                 <Paper sx={{ padding: 2 }}>
                     <Typography variant="h6" gutterBottom>
@@ -20,7 +19,6 @@ export default function Dashboard() {
                 </Paper>
             </Grid>
 
-            {/* DÍVIDAS */}
             <Grid item xs={12} md={7}>
                 <Paper sx={{ padding: 2 }}>
                     <Typography variant="h6" gutterBottom>

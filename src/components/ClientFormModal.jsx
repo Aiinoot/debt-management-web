@@ -35,7 +35,9 @@ export default function ClientFormModal({ open, onClose, onCreated }) {
                 const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
                 const data = await response.json();
 
-                if (!data.erro) {
+                if (data.erro) {
+                    setErrors(prev => ({ ...prev, cep: "CEP inválido" }))
+                } else {
                     setFormData(prev => ({
                         ...prev,
                         street: data.logradouro,
@@ -63,6 +65,7 @@ export default function ClientFormModal({ open, onClose, onCreated }) {
         if (!formData.cpf.trim()) newErrors.cpf = "Obrigatório"
         if (!formData.cep.trim()) newErrors.cep = "Obrigatório"
         if (!formData.city.trim()) newErrors.city = "Obrigatório"
+        if (!formData.street.trim()) newErrors.street = "Obrigatório"
         if (!formData.uf.trim()) newErrors.uf = "Obrigatório"
 
         setErrors(newErrors)
@@ -98,36 +101,60 @@ export default function ClientFormModal({ open, onClose, onCreated }) {
         <Box>
             <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
                 <DialogTitle>Novo Cliente</DialogTitle>
-                <DialogContent>
+                <DialogContent sx={{ minWidth: 320 }}>
                     <Grid container spacing={2} sx={{ mt: 1 }}>
-                        <Grid item xs={12} md={6}>
-                            <TextField label="Nome Completo" name="full_name" value={formData.full_name} onChange={handleChange} error={!!errors.full_name} helperText={errors.full_name} fullWidth />
+                        <Grid item xs={12} sm={8}>
+                            <TextField
+                                label="Nome Completo"
+                                name="full_name"
+                                value={formData.full_name}
+                                onChange={handleChange}
+                                error={!!errors.full_name}
+                                helperText={errors.full_name}
+                                fullWidth
+                            />
                         </Grid>
-                        <Grid item xs={12} md={6}>
-                            <TextField label="CPF" name="cpf" value={formData.cpf} onChange={handleChange} error={!!errors.cpf} helperText={errors.cpf} fullWidth />
+                        <Grid item xs={12} sm={4}>
+                            <TextField
+                                label="CPF"
+                                name="cpf"
+                                value={formData.cpf}
+                                onChange={handleChange}
+                                error={!!errors.cpf}
+                                helperText={errors.cpf}
+                                fullWidth
+                            />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField label="Email" name="email" value={formData.email} onChange={handleChange} fullWidth />
                         </Grid>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField label="Telefone" name="phone" value={formData.phone} onChange={handleChange} fullWidth />
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <TextField label="CEP" name="cep" value={formData.cep} onChange={checkCEP} error={!!errors.cep} helperText={errors.cep} fullWidth />
+                        <Grid item xs={12} sm={3}>
+                            <TextField
+                                label="CEP"
+                                name="cep"
+                                value={formData.cep}
+                                onChange={checkCEP}
+                                error={!!errors.cep}
+                                helperText={errors.cep}
+                                fullWidth
+                            />
                         </Grid>
-                        <Grid item xs={12} md={8}>
+                        <Grid item xs={12} sm={9}>
                             <TextField label="Rua" name="street" value={formData.street} onChange={handleChange} fullWidth />
                         </Grid>
-                        <Grid item xs={12} md={3}>
-                            <TextField label="Número" name="number" value={formData.number} onChange={handleChange} fullWidth />
+                        <Grid item xs={6} sm={2}>
+                            <TextField label="Nº" name="number" value={formData.number} onChange={handleChange} fullWidth />
                         </Grid>
-                        <Grid item xs={12} md={5}>
+                        <Grid item xs={12} sm={4}>
                             <TextField label="Bairro" name="neighborhood" value={formData.neighborhood} onChange={handleChange} fullWidth />
                         </Grid>
-                        <Grid item xs={12} md={3}>
+                        <Grid item xs={12} sm={4}>
                             <TextField label="Cidade" name="city" value={formData.city} onChange={handleChange} error={!!errors.city} helperText={errors.city} fullWidth />
                         </Grid>
-                        <Grid item xs={12} md={1}>
+                        <Grid item xs={6} sm={2}>
                             <TextField label="UF" name="uf" value={formData.uf} onChange={handleChange} error={!!errors.uf} helperText={errors.uf} fullWidth />
                         </Grid>
                     </Grid>
