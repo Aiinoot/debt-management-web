@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import api from "../services/api"
 import DebtFormModal from "./DebtFormModal"
+import EditDebtModal from "./EditDebtModal"
+import DeleteDebtModal from "./DeleteDebtModal"
 
 import {
   Table,
@@ -14,12 +16,24 @@ import {
   Button,
   Stack,
   Box,
+  IconButton,
+  Tooltip,
+  Snackbar,
+  Alert,
 } from "@mui/material"
+import EditIcon from "@mui/icons-material/Edit"
+import DeleteIcon from "@mui/icons-material/Delete"
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 
 export default function DebtsTable({ client }) {
   const [debts, setDebts] = useState([])
   const [loading, setLoading] = useState(false)
   const [formModalOpen, setFormModalOpen] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const [debtToEdit, setDebtToEdit] = useState(null)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [debtToDelete, setDebtToDelete] = useState(null)
+  const [statusToastOpen, setStatusToastOpen] = useState(false)
 
   async function fetchDebts() {
     if (!client?.id) return
@@ -55,6 +69,26 @@ export default function DebtsTable({ client }) {
     return d.toLocaleDateString("pt-BR")
   }
 
+  async function updateStatus(debt, newStatus) {
+    if (!debt?.id) return
+    try {
+      await api.put(`/debts/${debt.id}`, {
+        client_id: debt.client_id,
+        title: debt.title,
+        installments: Number(debt.installments),
+        value: Number(debt.value),
+        due_date: typeof debt.due_date === "string" && debt.due_date.length >= 10
+          ? debt.due_date.slice(0, 10)
+          : new Date(debt.due_date).toISOString().slice(0, 10),
+        status: newStatus,
+      })
+      setStatusToastOpen(true)
+      fetchDebts()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   if (!client) {
     return (
       <Typography variant="body2" color="text.secondary">
@@ -83,13 +117,14 @@ export default function DebtsTable({ client }) {
             <TableCell align="right">Valor</TableCell>
             <TableCell>Vencimento</TableCell>
             <TableCell>Status</TableCell>
+            <TableCell align="right">Ações</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
           {debts.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={5} align="center">
+              <TableCell colSpan={6} align="center">
                 <Typography variant="body2" color="text.secondary">
                   Este cliente não possui dívidas cadastradas.
                 </Typography>
@@ -105,6 +140,45 @@ export default function DebtsTable({ client }) {
                 </TableCell>
                 <TableCell>{formatDate(debt.due_date)}</TableCell>
                 <TableCell>{getStatusChip(debt.status)}</TableCell>
+                <TableCell align="right">
+                  <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="flex-end">
+                    {debt.status !== "QUITADO" && (
+                      <Tooltip title="Marcar como Quitado">
+                        <IconButton
+                          size="small"
+                          color="success"
+                          onClick={() => updateStatus(debt, "QUITADO")}
+                        >
+                          <CheckCircleIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    <Tooltip title="Editar">
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={() => {
+                          setDebtToEdit(debt)
+                          setEditModalOpen(true)
+                        }}
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Excluir">
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => {
+                          setDebtToDelete(debt)
+                          setDeleteModalOpen(true)
+                        }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Stack>
+                </TableCell>
               </TableRow>
             ))
           )}
@@ -117,6 +191,36 @@ export default function DebtsTable({ client }) {
         client={client}
         onCreated={fetchDebts}
       />
+      <EditDebtModal
+        open={editModalOpen}
+        onClose={() => {
+          setEditModalOpen(false)
+          setDebtToEdit(null)
+        }}
+        debt={debtToEdit}
+        onUpdated={fetchDebts}
+      />
+      <DeleteDebtModal
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false)
+          setDebtToDelete(null)
+        }}
+        debt={debtToDelete}
+        onDeleted={fetchDebts}
+      />
+
+      <Snackbar
+        open={statusToastOpen}
+        autoHideDuration={3000}
+        onClose={() => setStatusToastOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        sx={{ zIndex: 1400 }}
+      >
+        <Alert severity="success" onClose={() => setStatusToastOpen(false)}>
+          Marcado como quitado!
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }
