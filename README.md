@@ -1,16 +1,43 @@
-# React + Vite
+# 💸 Debt Management - Web (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto foi desenvolvido com fins educacionais e de portfólio. É a interface visual de um sistema de gestão de dívidas, focado em oferecer uma experiência fluida e inteligente para o usuário final.
 
-Currently, two official plugins are available:
+A aplicação utiliza React com Material UI e se comunica com uma API REST própria para persistência de dados.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Formulário Inteligente:** Cadastro de clientes com preenchimento automático de endereço via API ViaCEP.
+- **Máscaras de Input:** Formatação em tempo real para CPF `000.000.000-00`, Telefone `(00) 00000-0000` e CEP `00000-000`.
+- **Feedback Visual:** Notificações (Snackbars) de sucesso e validações de erro nos campos.
+- **Design Responsivo:** Layout adaptável para dispositivos móveis e desktop.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🔗 Links Úteis
+
+- **Site no ar (Vercel):** [https://debt-management-web.vercel.app/](https://debt-management-web.vercel.app/)
+- **Repositório da API:** [https://github.com/Aiinoot/debt-management-api](https://github.com/Aiinoot/debt-management-api)
+
+---
+
+## ▶️ Como rodar localmente
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/Aiinoot/debt-management-web.git
+   cd debt-management-web
+   ```
+
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
+
+3. **Inicie o projeto:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Acesse:** http://localhost:5173
