@@ -94,7 +94,7 @@ export default function ClientsTable({ onSelectClient }) {
                                         size="small"
                                         onClick={() => onSelectClient(client)}
                                     >
-                                        Ver Dívidas
+                                        Dívidas
                                     </Button>
                                     <Tooltip title="Editar">
                                         <IconButton
